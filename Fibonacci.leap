@@ -1,0 +1,46 @@
+-- Fibonacci.leap
+-- Program 4 (complex): recursion and Ok/Err for safety
+
+print("=== Fibonacci ===")
+print("")
+
+-- Recursive fib -- if/else as expressions, no return keyword needed
+fn fib(n) {
+    if n <= 0 {
+        0
+    } else if n == 1 {
+        1
+    } else {
+        fib(n - 1) + fib(n - 2)
+    }
+}
+
+-- Print fib(0) through fib(10)
+let lines = map(range(0, 11), fn(n) {
+    "fib(" + str(n) + ") = " + str(fib(n))
+})
+map(lines, fn(line) { print(line) })
+print("")
+
+-- Ok / Err: safe_fib rejects bad input instead of crashing
+fn safe_fib(n) {
+    if n < 0 {
+        Err("input must be 0 or greater")
+    } else {
+        Ok(fib(n))
+    }
+}
+
+print("=== Safe fib with Ok / Err ===")
+print("")
+
+let test_cases = [-2, 0, 6, 10, -5, 8]
+map(test_cases, fn(n) {
+    let r = safe_fib(n)
+    -- check the result and print a message
+    if r == Ok(fib(n)) {
+        print("safe_fib(" + str(n) + ") = " + str(r))
+    } else {
+        print("safe_fib(" + str(n) + ") = " + str(r))
+    }
+})

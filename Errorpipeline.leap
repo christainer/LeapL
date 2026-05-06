@@ -1,0 +1,78 @@
+-- Errorpipeline.leap
+-- Program 5 (complex bonus): Ok/Err, the ? operator, and pipelines together
+
+print("=== Result Type: Ok and Err ===")
+print("")
+
+-- safeDivide never crashes -- it returns Ok or Err
+fn safeDivide(a, b) {
+    if b == 0 {
+        Err("divide by zero")
+    } else {
+        Ok(a / b)
+    }
+}
+
+print("safeDivide(10, 2) = " + str(safeDivide(10, 2)))
+print("safeDivide(10, 0) = " + str(safeDivide(10, 0)))
+print("")
+
+-- The ? operator:
+--   Ok(x)?  unwraps to x and keeps going
+--   Err(e)? stops the function early and returns Err(e)
+
+fn run_pipeline(x) {
+    let a = safeDivide(x, 2)?
+    let b = safeDivide(a, 1)?
+    Ok(b + 100)
+}
+
+fn run_pipeline_err(x) {
+    let a = safeDivide(x, 2)?
+    let b = safeDivide(a, 0)?    -- hits Err, stops here
+    Ok(b + 100)                  -- never reached
+}
+
+print("=== ? Operator ===")
+print("")
+print("run_pipeline(10)     = " + str(run_pipeline(10)))
+print("run_pipeline_err(10) = " + str(run_pipeline_err(10)))
+print("")
+
+-- The exact demo from the Leap design spec
+fn main() {
+    let result =
+        10
+        |> fn(x) { safeDivide(x, 2) }?
+        |> fn(x) { Ok(x + 5) }?
+    Ok(result)
+}
+
+fn main_with_error() {
+    let result =
+        10
+        |> fn(x) { safeDivide(x, 0) }?
+        |> fn(x) { Ok(x + 5) }?
+    Ok(result)
+}
+
+print("=== Pipe + ? (the spec demo) ===")
+print("")
+print("main()            = " + str(main()))
+print("main_with_error() = " + str(main_with_error()))
+print("")
+
+-- Batch: show several division results in a pipeline
+print("=== Batch Results ===")
+print("")
+
+fn show_div(num, den) {
+    str(num) + " / " + str(den) + " = " + str(safeDivide(num, den))
+}
+
+print(show_div(10, 2))
+print(show_div(9,  3))
+print(show_div(5,  0))
+print(show_div(100, 4))
+print(show_div(7,  0))
+print(show_div(81, 9))

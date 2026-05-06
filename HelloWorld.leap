@@ -1,0 +1,32 @@
+-- HelloWorld.leap
+-- Program 1: basic Leap features
+
+-- let binds a name to a value
+let name    = "Leap"
+let version = 1
+
+print("Hello from " + name + " v" + str(version) + "!")
+print("")
+
+-- a function -- the last expression is the return value
+fn double(x) {
+    x * 2
+}
+
+fn greet(who) {
+    "Hello, " + who + "!"
+}
+
+print(greet("World"))
+print("double(21) = " + str(double(21)))
+print("")
+
+-- if/else is an expression, so you can assign its result directly
+let temp    = 72
+let weather = if temp > 85 { "hot" } else if temp > 60 { "nice" } else { "cold" }
+print("It is " + str(temp) + "F and " + weather + " outside")
+print("")
+
+-- functions are values -- you can store them in variables
+let triple = fn(x) { x * 3 }
+print("triple(7) = " + str(triple(7)))

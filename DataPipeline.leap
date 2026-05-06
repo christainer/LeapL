@@ -1,0 +1,52 @@
+-- DataPipeline.leap
+-- Program 2: the pipe operator -- Leap's main feature
+
+let scores = [88.5, 72.0, 95.3, 61.1, 44.8, 90.0, 55.2, 78.9]
+
+print("Raw scores:")
+print(str(scores))
+print("")
+
+-- Without pipe: you have to nest calls or use temp variables
+let passing = filter(scores, fn(s) { s >= 60.0 })
+let curved  = map(passing, fn(s) { s * 1.05 })
+
+print("Without pipe:")
+print("  passing: " + str(passing))
+print("  curved : " + str(curved))
+print("")
+
+-- With pipe: x |> f means f(x)
+-- x |> f(extra)  means  f(x, extra)
+-- You can chain as many steps as you want
+let result = scores
+    |> filter(fn(s) { s >= 60.0 })
+    |> map(fn(s) { s * 1.05 })
+
+print("With pipe (same result, reads top to bottom):")
+print("  " + str(result))
+print("")
+
+-- Closures: a function that captures a variable from its outer scope
+fn make_curve(pct) {
+    fn(score) { score * (1.0 + pct) }
+}
+
+let curve5  = make_curve(0.05)
+let curve10 = make_curve(0.10)
+
+print("curve5(80)  = " + str(curve5(80.0)))
+print("curve10(80) = " + str(curve10(80.0)))
+print("")
+
+-- Use the closure in a pipeline
+let top = scores
+    |> filter(fn(s) { s >= 60.0 })
+    |> map(curve10)
+
+print("Top scores with 10% curve:")
+print("  " + str(top))
+print("")
+
+let passing_count = scores |> filter(fn(s) { s >= 60.0 }) |> len
+print("Passing: " + str(passing_count) + " out of " + str(len(scores)))

@@ -1,0 +1,42 @@
+-- Fizzbuzz.leap
+-- Program 3: FizzBuzz 1 to 100
+
+-- classify takes a number and returns the right string
+fn classify(n) {
+    if n % 15 == 0 {
+        "FizzBuzz"
+    } else if n % 3 == 0 {
+        "Fizz"
+    } else if n % 5 == 0 {
+        "Buzz"
+    } else {
+        str(n)
+    }
+}
+
+print("=== FizzBuzz 1 to 100 ===")
+print("")
+
+-- range(1, 101) gives [1, 2, 3, ..., 100]
+-- map applies classify to each number
+-- the second map prints each result
+let numbers = range(1, 101)
+let labels  = map(numbers, fn(n) { classify(n) })
+map(labels, fn(label) { print(label) })
+
+print("")
+print("=== Stats ===")
+print("")
+
+let fizzbuzz_count = labels |> filter(fn(r) { r == "FizzBuzz" }) |> len
+let fizz_count     = labels |> filter(fn(r) { r == "Fizz"     }) |> len
+let buzz_count     = labels |> filter(fn(r) { r == "Buzz"     }) |> len
+let number_count   = labels
+    |> filter(fn(r) { r != "FizzBuzz" and r != "Fizz" and r != "Buzz" })
+    |> len
+
+print("FizzBuzz : " + str(fizzbuzz_count))
+print("Fizz     : " + str(fizz_count))
+print("Buzz     : " + str(buzz_count))
+print("Numbers  : " + str(number_count))
+print("Total    : " + str(fizzbuzz_count + fizz_count + buzz_count + number_count))
